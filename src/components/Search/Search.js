@@ -1,9 +1,10 @@
 import React from 'react';
-import './Search.css';
+import './Search.scss';
 
 const Filter = ({ filterText, onFilter, onClear }) => (
-    <div>
+    <div className='search'>
         <input
+            className='search__input'
             id="search"
             type="text"
             placeholder="Tìm kiếm"
@@ -11,9 +12,8 @@ const Filter = ({ filterText, onFilter, onClear }) => (
             value={filterText}
             onChange={onFilter}
         />
-        <button type="button" onClick={onClear}>
-            &#10006;
-        </button>
+        {!filterText ? '' : <button className='search__clear' type="button" onClick={onClear}>&#10006;</button>}
+
     </div>
 );
 

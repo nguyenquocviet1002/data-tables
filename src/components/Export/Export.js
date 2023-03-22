@@ -1,6 +1,6 @@
 import React from 'react'
-import './Export.css'
+import './Export.scss'
 
-const Export = ({ onExport }) => <button onClick={(e) => onExport(e.target.value)}>Export File CSV</button>;
+const Export = ({ onExport }) => <button type='button' className='button green' onClick={(e) => onExport(e.target.value)}>Export File CSV</button>;
 
 export default Export

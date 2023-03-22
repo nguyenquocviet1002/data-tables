@@ -4,16 +4,20 @@ import getData from './apis/tablesAPI';
 import { downloadCSV } from './utils/convertToCSV';
 import Export from './components/Export/Export';
 import Filter from './components/Search/Search';
+import Download from './components/Download/Download';
 
 function App() {
 
   const [dataTables, setDataTables] = useState([]);
+  const [filterText, setFilterText] = useState('');
+  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
+  const [pending, setPending] = useState(true);
 
   useEffect(() => {
     getData()
       .then((res) => res.json())
       .then(
-        (data) => setDataTables(data),
+        (data) => { setDataTables(data); setPending(false) },
         (error) => console.log(error),
       );
   }, []);
@@ -41,7 +45,7 @@ function App() {
     },
     {
       name: 'File CV',
-      selector: (row) => row.linkCV,
+      cell: (row) => <Download linkDownload={row.linkCV} />,
     },
     {
       name: 'Trạng thái',
@@ -51,28 +55,25 @@ function App() {
 
   const actionsMemo = useMemo(() => <Export onExport={() => downloadCSV(dataTables)} />, [dataTables]);
 
-  const [filterText, setFilterText] = useState('');
-  const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
-
-  const filteredItems = dataTables.filter(
+  const filteredName = dataTables.filter(
     (item) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
   );
-  const filteredItems2 = dataTables.filter(
+  const filteredPhoneNumber = dataTables.filter(
     (item) => item.phoneNumber && item.phoneNumber.includes(filterText),
   );
-  const filteredItems3 = dataTables.filter(
+  const filteredEmail = dataTables.filter(
     (item) => item.email && item.email.toLowerCase().includes(filterText.toLowerCase()),
   );
-  const filteredItems4 = dataTables.filter(
+  const filteredPositionApply = dataTables.filter(
     (item) => item.positionApply && item.positionApply.toLowerCase().includes(filterText.toLowerCase()),
   );
+  const filteredStatus = dataTables.filter(
+    (item) => item.status && item.status.toLowerCase().includes(filterText.toLowerCase()),
+  );
 
-  let datanew = [...filteredItems, ...filteredItems2, ...filteredItems3, ...filteredItems4];
+  const dataFilterAll = [...filteredName, ...filteredPhoneNumber, ...filteredEmail, ...filteredPositionApply, ...filteredStatus];
 
-  const removeDuplicates = (array) => {
-    return array.filter((item, index) => array.indexOf(item) === index);
-  };
-  let newData = removeDuplicates(datanew);
+  const dataFilter = dataFilterAll.filter((item, index) => dataFilterAll.indexOf(item) === index);
 
   const subHeaderComponentMemo = useMemo(() => {
     const handleClear = () => {
@@ -90,13 +91,16 @@ function App() {
   return (
     <DataTable
       columns={columns}
-      data={newData}
+      data={dataFilter}
       actions={actionsMemo}
       pagination
       paginationResetDefaultPage={resetPaginationToggle}
       subHeader
       subHeaderComponent={subHeaderComponentMemo}
       persistTableHead
+      progressPending={pending}
+      striped
+      highlightOnHover
     />
   );
 }
