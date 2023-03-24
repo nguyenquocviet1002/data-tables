@@ -1,10 +1,12 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import './App.scss';
 import DataTable from 'react-data-table-component';
-import getData from './apis/tablesAPI';
+import { getData, removeData, updateData } from './apis/tablesAPI';
 import { downloadCSV } from './utils/convertToCSV';
 import Export from './components/Export/Export';
 import Filter from './components/Search/Search';
 import Download from './components/Download/Download';
+import Popup from './components/Popup/Popup';
 
 function App() {
 
@@ -12,6 +14,7 @@ function App() {
   const [filterText, setFilterText] = useState('');
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [pending, setPending] = useState(true);
+  const [dataUpdate, setDataUpdate] = useState({});
 
   useEffect(() => {
     getData()
@@ -21,6 +24,41 @@ function App() {
         (error) => console.log(error),
       );
   }, []);
+
+  const removeItem = async (id) => {
+    await removeData(id)
+      .then(res => res.json())
+      .then(
+        (data) => {
+          const dataFilter = dataTables.filter(item => {
+            return data.id !== item.id;
+          })
+          setDataTables(dataFilter)
+        },
+        (err) => { console.log(err) }
+      )
+  }
+
+  const showPopup = (id) => {
+    const newItem = dataTables.filter(item => {
+      return item.id === id
+    })
+    setDataUpdate(newItem[0])
+  }
+
+  const handleSubmitUpdate = async (id, dataNew) => {
+    await updateData(id, dataNew)
+      .then(res => res.json())
+      .then(
+        (data) => {
+          const newProjects = dataTables.map(p =>
+            p.id === id ? { ...p, ...data } : p
+          );
+          setDataTables(newProjects)
+        },
+        (err) => console.log(err)
+      )
+  }
 
   const columns = [
     {
@@ -51,9 +89,11 @@ function App() {
       name: 'Trạng thái',
       selector: (row) => row.status,
     },
+    {
+      name: 'Hành động',
+      cell: (row) => <div><button onClick={() => showPopup(row.id)}>Chỉnh sửa</button><button onClick={() => removeItem(row.id)}>Xóa</button></div>
+    },
   ];
-
-  const actionsMemo = useMemo(() => <Export onExport={() => downloadCSV(dataTables)} />, [dataTables]);
 
   const filteredName = dataTables.filter(
     (item) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
@@ -84,24 +124,30 @@ function App() {
     };
 
     return (
-      <Filter onFilter={(e) => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+      <div className='head'>
+        <Filter onFilter={(e) => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
+        <Export onExport={() => downloadCSV(dataTables)} />
+      </div>
     );
-  }, [filterText, resetPaginationToggle]);
+  }, [filterText, resetPaginationToggle, dataTables]);
 
   return (
-    <DataTable
-      columns={columns}
-      data={dataFilter}
-      actions={actionsMemo}
-      pagination
-      paginationResetDefaultPage={resetPaginationToggle}
-      subHeader
-      subHeaderComponent={subHeaderComponentMemo}
-      persistTableHead
-      progressPending={pending}
-      striped
-      highlightOnHover
-    />
+    <div>
+      <DataTable
+        columns={columns}
+        data={dataFilter}
+        pagination
+        paginationResetDefaultPage={resetPaginationToggle}
+        subHeader
+        subHeaderWrap
+        subHeaderComponent={subHeaderComponentMemo}
+        persistTableHead
+        progressPending={pending}
+        striped
+        highlightOnHover
+      />
+      <Popup data={dataUpdate} handleSubmit={handleSubmitUpdate} />
+    </div>
   );
 }
 

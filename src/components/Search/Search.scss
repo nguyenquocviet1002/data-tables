@@ -1,6 +1,7 @@
 .search {
     position: relative;
     width: 250px;
+    margin-right: 60px;
 
     &__input {
         color: #111827;
@@ -33,10 +34,4 @@
         align-items: center;
         justify-content: center;
     }
-}
-
-.kTRUaX {
-    display: block !important;
-    min-height: auto !important;
-
 }
