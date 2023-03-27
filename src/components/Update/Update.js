@@ -9,7 +9,7 @@ const Update = ({ data, show, handleSubmit }) => {
 
     useEffect(() => {
         setDataUpdate(data);
-        setValue(data.status);
+        setValue(data.description);
     }, [data]);
 
     useEffect(() => {
@@ -29,7 +29,7 @@ const Update = ({ data, show, handleSubmit }) => {
                 </div>
                 <div className="update__group">
                     <label className="update__label" htmlFor="phone-number">Số điện thoại</label>
-                    <input className="update__input" type="text" id="phone-number" value={dataUpdate.phoneNumber} onChange={(e) => { setDataUpdate({ ...dataUpdate, phoneNumber: e.target.value }) }} />
+                    <input className="update__input" type="text" id="phone-number" value={dataUpdate.phone} onChange={(e) => { setDataUpdate({ ...dataUpdate, phone: e.target.value }) }} />
                 </div>
                 <div className="update__group">
                     <label className="update__label" htmlFor="email">Email</label>
@@ -37,11 +37,11 @@ const Update = ({ data, show, handleSubmit }) => {
                 </div>
                 <div className="update__group">
                     <label className="update__label" htmlFor="position">Vị trí ứng tuyển</label>
-                    <input className="update__input" type="text" id="position" value={dataUpdate.positionApply} onChange={(e) => { setDataUpdate({ ...dataUpdate, positionApply: e.target.value }) }} />
+                    <input className="update__input" type="text" id="position" value={dataUpdate.position} onChange={(e) => { setDataUpdate({ ...dataUpdate, position: e.target.value }) }} />
                 </div>
                 <div className="update__group">
                     <label className="update__label" htmlFor="status">Trạng thái</label>
-                    <select className="update__input" id="status" value={value} onChange={(e) => { setValue(e.target.value); setDataUpdate({ ...dataUpdate, status: e.target.value }) }}>
+                    <select className="update__input" id="status" value={value} onChange={(e) => { setValue(e.target.value); setDataUpdate({ ...dataUpdate, description: e.target.value }) }}>
                         <option value="Đã hủy">Đã hủy</option>
                         <option value="Đã phỏng vấn">Đã phỏng vấn</option>
                         <option value="Chưa phỏng vấn">Chưa phỏng vấn</option>
@@ -49,6 +49,8 @@ const Update = ({ data, show, handleSubmit }) => {
                         <option value="Đã được nhận">Đã được nhận</option>
                     </select>
                 </div>
+                <input className="update__input" type="text" value={dataUpdate.cv} hidden />
+                <input className="update__input" type="text" value={dataUpdate.id} hidden />
             </div>
             <div className="update__cta">
                 <button type="button" className="button update__submit" onClick={() => { handleSubmit(dataUpdate.id, dataUpdate); hidden() }}>Lưu</button>

@@ -1,23 +1,15 @@
-const baseURL = 'https://61a1fe86014e1900176de816.mockapi.io';
+const baseURL = 'https://scigroup.com.vn/app/recruit/api';
 
 const getData = () => {
-    return fetch(`${baseURL}/tables`)
+    return fetch(`${baseURL}/read`)
 }
 
-const updateData = (id, data) => {
-    return fetch(`${baseURL}/tables/${id}`, {
-        method: 'PUT',
-        headers: {
-            'Content-type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify(data)
-    })
+const updateData = (data) => {
+    return fetch(`${baseURL}/update?id=${data.id}&name=${data.name}&phone=${data.phone}&email=${data.email}&position=${data.position}&cv=${data.cv}&description=${data.description}`)
 }
 
 const removeData = (id) => {
-    return fetch(`${baseURL}/tables/${id}`, {
-        method: 'DELETE'
-    })
+    return fetch(`${baseURL}/delete?id=${id}`)
 }
 
 export { getData, updateData, removeData };

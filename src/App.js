@@ -24,7 +24,7 @@ function App() {
     getData()
       .then((res) => res.json())
       .then(
-        (data) => { setDataTables(data); setPending(false) },
+        (data) => { setDataTables(data.body); setPending(false) },
         (error) => console.log(error),
       );
   }, []);
@@ -37,7 +37,7 @@ function App() {
       .then(
         (data) => {
           const dataFilter = dataTables.filter(item => {
-            return data.id !== item.id;
+            return id !== item.id;
           })
           setDataTables(dataFilter);
           setPending(false);
@@ -63,20 +63,21 @@ function App() {
     setConfirm(false)
   }
 
-  const handleSubmitUpdate = async (id, dataNew) => {
+  const handleSubmitUpdate = async (dataNew) => {
     setPending(true);
-    await updateData(id, dataNew)
-      .then(res => res.json())
-      .then(
-        (data) => {
-          const newProjects = dataTables.map(p =>
-            p.id === id ? { ...p, ...data } : p
-          );
-          setDataTables(newProjects);
-          setPending(false);
-        },
-        (err) => console.log(err)
-      )
+    console.log(dataNew)
+    // await updateData(dataNew)
+    //   .then(res => res.json())
+    //   .then(
+    //     (data) => {
+    //       const newProjects = dataTables.map(p =>
+    //         p.id === id ? { ...p, ...data } : p
+    //       );
+    //       setDataTables(newProjects);
+    //       setPending(false);
+    //     },
+    //     (err) => console.log(err)
+    //   )
   }
 
   const columns = [
@@ -87,7 +88,7 @@ function App() {
     },
     {
       name: 'Điện thoại',
-      selector: (row) => row.phoneNumber,
+      selector: (row) => row.phone,
       sortable: true,
     },
     {
@@ -97,16 +98,16 @@ function App() {
     },
     {
       name: 'Vị trí ứng tuyển',
-      selector: (row) => row.positionApply,
+      selector: (row) => row.position,
       sortable: true,
     },
     {
       name: 'File CV',
-      cell: (row) => <Download linkDownload={row.linkCV} />,
+      cell: (row) => <Download linkDownload={row.cv} />,
     },
     {
       name: 'Trạng thái',
-      selector: (row) => row.status,
+      selector: (row) => row.description,
     },
     {
       name: 'Hành động',
@@ -118,19 +119,16 @@ function App() {
     (item) => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
   );
   const filteredPhoneNumber = dataTables.filter(
-    (item) => item.phoneNumber && item.phoneNumber.includes(filterText),
+    (item) => item.phone && item.phone.includes(filterText),
   );
   const filteredEmail = dataTables.filter(
     (item) => item.email && item.email.toLowerCase().includes(filterText.toLowerCase()),
   );
   const filteredPositionApply = dataTables.filter(
-    (item) => item.positionApply && item.positionApply.toLowerCase().includes(filterText.toLowerCase()),
-  );
-  const filteredStatus = dataTables.filter(
-    (item) => item.status && item.status.toLowerCase().includes(filterText.toLowerCase()),
+    (item) => item.position && item.position.toLowerCase().includes(filterText.toLowerCase()),
   );
 
-  const dataFilterAll = [...filteredName, ...filteredPhoneNumber, ...filteredEmail, ...filteredPositionApply, ...filteredStatus];
+  const dataFilterAll = [...filteredName, ...filteredPhoneNumber, ...filteredEmail, ...filteredPositionApply];
 
   const dataFilter = dataFilterAll.filter((item, index) => dataFilterAll.indexOf(item) === index);
 
@@ -153,7 +151,7 @@ function App() {
   const customStyles = {
     subHeader: {
       style: {
-        display: 'flex',
+        display: 'block',
         padding: '0 0 10px 0'
       }
     },
