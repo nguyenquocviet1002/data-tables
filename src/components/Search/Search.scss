@@ -1,7 +1,7 @@
 .search {
     position: relative;
-    width: 250px;
-    margin-right: 60px;
+    width: 300px;
+    margin-right: 10px;
 
     &__input {
         color: #111827;
@@ -15,23 +15,30 @@
         padding: 10px 30px 10px 10px;
 
         &:focus {
+            outline: auto;
             outline-color: #3f83f8;
         }
     }
 
     &__clear {
         position: absolute;
-        right: -35px;
+        right: 7px;
         top: 50%;
         transform: translateY(-50%);
         line-height: 1;
-        background-color: #ddd;
+        background-color: #000;
         border-radius: 100%;
         padding: 0;
-        width: 20px;
-        height: 20px;
+        width: 17px;
+        height: 17px;
         display: flex;
         align-items: center;
         justify-content: center;
+        border: none;
+        font-size: 10px;
+    }
+
+    @media (max-width: 600px) {
+        width: 100%;
     }
 }

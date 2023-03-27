@@ -1,0 +1,66 @@
+.update {
+    width: 100%;
+    max-width: 50%;
+    margin: 10px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 5px 0px #ddd;
+
+    &__title {
+        text-align: center;
+        font-size: 20px;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    &__box {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .update__group {
+        width: 100%;
+        display: block;
+        margin: 10px 0;
+    }
+
+    &__label {
+        display: block;
+        margin-bottom: 5px;
+        color: #111827;
+    }
+
+    &__input {
+        color: #111827;
+        background-color: #f9fafb;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #d1d5db;
+        border-radius: 0.5rem;
+        width: 100%;
+        display: block;
+        padding: 10px;
+
+        &:focus,
+        &:focus-within {
+            outline: auto;
+            outline-color: #3f83f8;
+        }
+    }
+
+    &__cta {
+        display: flex;
+        justify-content: center;
+    }
+
+
+    .update__submit {
+        display: block;
+        min-width: 80px;
+        margin: 0 10px;
+    }
+
+    @media (max-width: 767px) {
+        max-width: 100%;
+    }
+}

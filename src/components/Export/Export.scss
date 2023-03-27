@@ -1,32 +1,6 @@
-.button {
-    color: #ffffff;
-    font-weight: 500;
-    font-size: .875rem;
-    line-height: 1.25rem;
-    padding-bottom: 0.625rem;
-    padding-top: 0.625rem;
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
-    background-color: #1a56db;
-    border-radius: 0.5rem;
-
-    &:hover {
-        background-color: #1e429f;
-    }
-
-    &:focus {
-        box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px + 0px) #a4cafe, 0 0 #0000;
-    }
-
-    &.green {
-        background-color: #046c4e;
-
-        &:hover {
-            background-color: #03543f;
-        }
-
-        &:focus {
-            box-shadow: 0 0 0 0px #fff, 0 0 0 calc(4px) #84e1bc, 0 0 #0000, 0 0 #0000;
-        }
+.export__cta {
+    @media(max-width: 600px) {
+        width: 50%;
+        margin: 10px 0;
     }
 }

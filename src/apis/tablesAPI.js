@@ -1,9 +1,11 @@
+const baseURL = 'https://61a1fe86014e1900176de816.mockapi.io';
+
 const getData = () => {
-    return fetch("https://61a1fe86014e1900176de816.mockapi.io/tables")
+    return fetch(`${baseURL}/tables`)
 }
 
 const updateData = (id, data) => {
-    return fetch(`https://61a1fe86014e1900176de816.mockapi.io/tables/${id}`, {
+    return fetch(`${baseURL}/tables/${id}`, {
         method: 'PUT',
         headers: {
             'Content-type': 'application/json; charset=UTF-8'
@@ -13,7 +15,7 @@ const updateData = (id, data) => {
 }
 
 const removeData = (id) => {
-    return fetch(`https://61a1fe86014e1900176de816.mockapi.io/tables/${id}`, {
+    return fetch(`${baseURL}/tables/${id}`, {
         method: 'DELETE'
     })
 }
