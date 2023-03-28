@@ -6,7 +6,7 @@ const Confirm = ({ show, hidden, id, remove }) => {
         <div className="confirm" style={!show ? { display: 'none' } : { display: 'flex' }}>
             <div className="confirm__bg" onClick={hidden}></div>
             <div className="confirm__box">
-                <div className="confirm__title">Bạn có muốn thực hiện hành động</div>
+                <div className="confirm__title">Bạn có muốn xóa</div>
                 <img src="./icon-caution.png" alt="" />
                 <div className="confirm__btn">
                     <button onClick={() => { remove(id); hidden() }} className="button">Có</button>

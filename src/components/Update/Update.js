@@ -49,11 +49,11 @@ const Update = ({ data, show, handleSubmit }) => {
                         <option value="Đã được nhận">Đã được nhận</option>
                     </select>
                 </div>
-                <input className="update__input" type="text" value={dataUpdate.cv} hidden />
-                <input className="update__input" type="text" value={dataUpdate.id} hidden />
+                <input className="update__input" type="hidden" value={dataUpdate.cv} />
+                <input className="update__input" type="hidden" value={dataUpdate.id} />
             </div>
             <div className="update__cta">
-                <button type="button" className="button update__submit" onClick={() => { handleSubmit(dataUpdate.id, dataUpdate); hidden() }}>Lưu</button>
+                <button type="button" className="button update__submit" onClick={() => { handleSubmit(dataUpdate); hidden() }}>Lưu</button>
                 <button type="button" className="button red update__submit" onClick={hidden}>Hủy</button>
             </div>
         </div>
