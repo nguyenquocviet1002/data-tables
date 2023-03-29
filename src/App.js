@@ -19,10 +19,11 @@ function App() {
   const [pending, setPending] = useState(true);
   const [filterText, setFilterText] = useState('');
   const [showFormUpdate, setShowFormUpdate] = useState(false);
-  const [showPopConfirm, setShowPopConfirm] = useState(false)
-  const [id, setId] = useState('')
-  const [ids, setIds] = useState([])
-  const [status, setStatus] = useState('')
+  const [showPopConfirm, setShowPopConfirm] = useState(false);
+  const [id, setId] = useState('');
+  const [ids, setIds] = useState([]);
+  const [typeRemove, setTypeRemove] = useState('');
+  const [status, setStatus] = useState('');
 
   // get data
   useEffect(() => {
@@ -64,11 +65,10 @@ function App() {
 
   // popup confirm remove
   const showConfirm = (id, type) => {
-    console.log("type: ", type);
-    console.log("id: ", id);
     setShowPopConfirm(true);
-
-    // type === 'single' ? setId(id) : setIds(id);
+    setTypeRemove(type);
+    console.log(id)
+    type === 'single' ? setId(id) : setIds(id);
   }
 
   const hiddenConfirm = () => {
@@ -92,13 +92,30 @@ function App() {
       )
   }
 
+  // remove multiple item
+  const removeMultiple = ids => {
+    ids.map(async id => {
+      await removeData(id)
+        .then(res => res.json())
+        .then(
+          data => setPending(false),
+          err => console.log(err)
+        )
+    })
+    const afterData = dataTables.filter(item => {
+      return !ids.includes(item.id);
+    })
+    setDataTables(afterData);
+  }
+
   // select row -> get id row
   const selectRow = ({ selectedRows }) => {
     const idRow = selectedRows.map(item => item.id);
     setIds(idRow)
   };
 
-  const showPopup = (id) => {
+  // show info form update
+  const showForm = id => {
     const newItem = dataTables.filter(item => {
       return item.id === id
     })
@@ -106,19 +123,19 @@ function App() {
     setShowFormUpdate(true);
   }
 
-  const handleSubmitUpdate = async (dataNew) => {
+  const handleSubmitUpdate = async dataNew => {
     setPending(true);
     await updateData(dataNew)
       .then(res => res.json())
       .then(
-        (data) => {
-          const newProjects = dataTables.map(p =>
-            p.id === dataNew.id ? { ...p, ...dataNew } : p
+        () => {
+          const newDataTables = dataTables.map(item =>
+            item.id === dataNew.id ? { ...item, ...dataNew } : item
           );
-          setDataTables(newProjects);
+          setDataTables(newDataTables);
           setPending(false);
         },
-        (err) => console.log(err)
+        err => console.log(err)
       )
   }
 
@@ -132,28 +149,11 @@ function App() {
       }
     };
 
-    const demoDelete = (demoDelete) => {
-      demoDelete.map(async id => {
-        await removeData(id)
-          .then(res => res.json())
-          .then(
-            data => setPending(false),
-            err => console.log(err)
-          )
-      })
-
-      const dataFilter = dataTables.filter(item => {
-        return !demoDelete.includes(item.id);
-      })
-      setDataTables(dataFilter);
-    }
-
     return (
       <div className='header'>
         <Filter onFilter={(e) => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
         <FilterOption onFilterOption={(e) => setStatus(e.target.value)} />
-        <DeleteMultiple showConfirm={showConfirm} deleteMulti={demoDelete} id={ids} />
-        <button onClick={() => demoDelete(ids)}>Delete</button>
+        {ids.length !== 0 && <DeleteMultiple showConfirm={showConfirm} id={ids} />}
         <Export onExport={() => downloadCSV(dataTables)} />
       </div>
     );
@@ -192,7 +192,7 @@ function App() {
       name: 'Hành động',
       cell: row =>
         <div className='cta__action'>
-          <button className='button button--outline' onClick={() => showPopup(row.id)}>Chỉnh sửa</button>
+          <button className='button button--outline' onClick={() => showForm(row.id)}>Chỉnh sửa</button>
           <button className='button button--outline red' onClick={() => showConfirm(row.id, 'single')}>Xóa</button>
         </div>
     },
@@ -236,7 +236,7 @@ function App() {
   return (
     <div className='container-full'>
       <Update data={dataUpdate} show={showFormUpdate} handleSubmit={handleSubmitUpdate} />
-      <Confirm show={showPopConfirm} hidden={hiddenConfirm} id={id} remove={removeItem} />
+      <Confirm show={showPopConfirm} hidden={hiddenConfirm} id={id} ids={ids} type={typeRemove} remove={removeItem} removeMulti={removeMultiple} />
 
       <div className='table__box'>
         <DataTable

@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 15px;
 
     @media (max-width: 600px) {
         width: 100%;
@@ -39,18 +40,18 @@
 }
 
 .button {
-    color: #ffffff;
+    color: #fff;
     font-weight: 500;
     line-height: 1.25rem;
     padding-bottom: 0.625rem;
     padding-top: 0.625rem;
     padding-left: 1.25rem;
     padding-right: 1.25rem;
-    background-color: #1a56db;
+    background-color: #0d6efd;
     border-radius: 0.5rem;
 
     &:hover {
-        background-color: #1e429f;
+        background-color: #0b5ed7;
     }
 
     &:focus {
@@ -58,10 +59,10 @@
     }
 
     &.green {
-        background-color: #046c4e;
+        background-color: #198754;
 
         &:hover {
-            background-color: #03543f;
+            background-color: #157347;
         }
 
         &:focus {
@@ -70,10 +71,10 @@
     }
 
     &.red {
-        background-color: #c81e1e;
+        background-color: #dc3545;
 
         &:hover {
-            background-color: #9b1c1c;
+            background-color: #bb2d3b;
         }
 
         &:focus {
@@ -83,20 +84,22 @@
 
     &--outline {
         background-color: transparent;
-        border: 1px solid #1a56db;
-        color: #1a56db;
+        border: 1px solid #0d6efd;
+        color: #0d6efd;
 
         &:hover {
-            color: #ffffff;
+            background-color: #0d6efd;
+            color: #fff;
         }
 
         &.red {
             background-color: transparent;
-            color: #c81e1e;
-            border: 1px solid #c81e1e;
+            color: #dc3545;
+            border: 1px solid #dc3545;
 
             &:hover {
-                color: #ffffff;
+                background-color: #dc3545;
+                color: #fff;
             }
         }
     }
