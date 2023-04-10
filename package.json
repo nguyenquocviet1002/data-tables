@@ -1,6 +1,7 @@
 {
   "name": "data-tables",
   "version": "0.1.0",
+  "homepage": "https://scigroup.com.vn/cp/component/data-tables/",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

@@ -4,17 +4,17 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
-import TabBar from './components/TabBar/Tabbar';
+// import TabBar from './components/TabBar/Tabbar';
 import View from './components/View/View';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='cp/component/data-tables'>
       <Routes>
         <Route element={
           <div className='container-full'>
-            <TabBar />
+            {/* <TabBar /> */}
             <Outlet />
           </div>
         }>

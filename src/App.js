@@ -225,6 +225,14 @@ function App() {
       selector: row => row.description,
     },
     {
+      name: 'Ngày',
+      selector: row => new Date(row.created).toLocaleDateString('zh-HK', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+      })
+    },
+    {
       name: 'Hành động',
       cell: row =>
         <div className='cta__action'>
@@ -234,15 +242,15 @@ function App() {
     },
   ];
 
-  const conditionalRowStyles = [
-    {
-      when: row => row.description === 'Chưa phỏng vấn',
-      style: {
-        color: '#721c24',
-        backgroundColor: '#f8d7da',
-      },
-    },
-  ];
+  // const conditionalRowStyles = [
+  //   {
+  //     when: row => row.description === 'Chưa phỏng vấn',
+  //     style: {
+  //       color: '#721c24',
+  //       backgroundColor: '#f8d7da',
+  //     },
+  //   },
+  // ];
 
   const customStyles = {
     subHeader: {
@@ -299,7 +307,7 @@ function App() {
           customStyles={customStyles}
           selectableRows
           onSelectedRowsChange={selectRow}
-          conditionalRowStyles={conditionalRowStyles}
+        // conditionalRowStyles={conditionalRowStyles}
         />
       </div>
     </div>
