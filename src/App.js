@@ -5,7 +5,6 @@ import { getData, removeData, updateData } from './apis/tablesAPI';
 import { downloadCSV } from './utils/convertToCSV';
 import Export from './components/Export/Export';
 import Filter from './components/Search/Search';
-import Download from './components/Download/Download';
 import Confirm from './components/Confirm/Confirm';
 import Update from './components/Update/Update';
 import FilterOption from './components/FilterOption/FilterOption';
@@ -33,10 +32,10 @@ function App() {
       .then(res => res.json())
       .then(
         data => {
-          setDataTables(data.body);
+          setDataTables(data);
           setPending(false);
           const dateNow = new Date().getTime();
-          const dataAgo = data.body.filter(item => {
+          const dataAgo = data.filter(item => {
             return dateNow - (86400000 * 7) < new Date(item.created).getTime() && item.name;
           })
           setDataTablesAgo(dataAgo);
@@ -49,14 +48,17 @@ function App() {
 
   // filter search
   const filteredName = dataTables.filter(
-    item => item.name && item.name.toLowerCase().includes(filterText.toLowerCase()),
+    item => item.phone && item.phone.toLowerCase().includes(filterText.toLowerCase()),
   );
   const filteredPhoneNumber = dataTables.filter(
-    item => item.phone && item.phone.includes(filterText),
+    item => item.id && item.id.includes(filterText),
   );
   const filteredEmail = dataTables.filter(
-    item => item.email && item.email.toLowerCase().includes(filterText.toLowerCase()),
+    item => item.ip && item.ip.includes(filterText),
   );
+  // const filteredEmail = dataTables.filter(
+  //   item => item.email && item.email.toLowerCase().includes(filterText.toLowerCase()),
+  // );
   const filteredPositionApply = dataTables.filter(
     item => item.position && item.position.toLowerCase().includes(filterText.toLowerCase()),
   );
@@ -144,20 +146,6 @@ function App() {
     setIds(idRow)
   };
 
-  // show info form update
-  const showForm = id => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    })
-    const newItem = dataTables.filter(item => {
-      return item.id === id
-    })
-    setDataUpdate(newItem[0]);
-    setShowFormUpdate(true);
-  }
-
   const handleSubmitUpdate = async dataNew => {
     setPending(true);
     await updateData(dataNew)
@@ -197,38 +185,29 @@ function App() {
 
   const columns = [
     {
-      name: 'Họ và tên',
-      selector: row => row.name,
+      name: 'ID',
+      selector: row => row.id,
       sortable: true,
     },
     {
-      name: 'Điện thoại',
+      name: 'User',
+      selector: row => row.userid,
+      sortable: true,
+    },
+    {
+      name: 'Họ và tên',
       selector: row => row.phone,
       sortable: true,
     },
     {
-      name: 'Email',
-      selector: row => row.email,
+      name: 'IP',
+      selector: row => row.ip,
       sortable: true,
-    },
-    {
-      name: 'Vị trí ứng tuyển',
-      selector: row => row.position,
-      sortable: true,
-    },
-    {
-      name: 'File CV',
-      cell: row => <Download linkDownload={row.cv} />,
-    },
-    {
-      name: 'Trạng thái',
-      selector: row => row.description,
     },
     {
       name: 'Hành động',
       cell: row =>
         <div className='cta__action'>
-          <button className='button button--outline' onClick={() => showForm(row.id)}>Chỉnh sửa</button>
           <button className='button button--outline red' onClick={() => showConfirm(row.id, 'single')}>Xóa</button>
         </div>
     },

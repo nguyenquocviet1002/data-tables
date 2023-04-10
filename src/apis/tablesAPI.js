@@ -1,7 +1,7 @@
-const baseURL = 'https://scigroup.com.vn/app/recruit/api';
+const baseURL = 'https://app.scigroupvn.com/vote/public/api';
 
 const getData = () => {
-    return fetch(`${baseURL}/read`)
+    return fetch(`${baseURL}/get-uservotes`)
 }
 
 const updateData = (data) => {
