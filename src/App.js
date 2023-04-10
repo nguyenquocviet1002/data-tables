@@ -10,10 +10,12 @@ import Confirm from './components/Confirm/Confirm';
 import Update from './components/Update/Update';
 import FilterOption from './components/FilterOption/FilterOption';
 import DeleteMultiple from './components/DeleteMultiple/DeleteMultiple';
+import FilterDate from './components/FilterDate/FilterDate';
 
 function App() {
 
   const [dataTables, setDataTables] = useState([]);
+  const [dataTablesAgo, setDataTablesAgo] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [pending, setPending] = useState(true);
@@ -23,17 +25,27 @@ function App() {
   const [id, setId] = useState('');
   const [ids, setIds] = useState([]);
   const [typeRemove, setTypeRemove] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState({ status: '', date: '' });
 
   // get data
   useEffect(() => {
     getData()
       .then(res => res.json())
       .then(
-        data => { setDataTables(data.body); setPending(false) },
+        data => {
+          setDataTables(data.body);
+          setPending(false);
+          const dateNow = new Date().getTime();
+          const dataAgo = data.body.filter(item => {
+            return dateNow - (86400000 * 7) < new Date(item.created).getTime() && item.name;
+          })
+          setDataTablesAgo(dataAgo);
+        },
         error => console.log(error),
       );
   }, []);
+
+  console.log(dataTablesAgo);
 
   // filter search
   const filteredName = dataTables.filter(
@@ -53,13 +65,32 @@ function App() {
 
   const dataFilter = dataFilterAll.filter((item, index) => dataFilterAll.indexOf(item) === index);
 
-  // data after change status
-  const filterStatus = status => {
+  // data sort date
+  const dataSort = dataFilter.sort((a, b) => {
+    return new Date(a.created).getTime() -
+      new Date(b.created).getTime()
+  }).reverse();
+
+  // data after change status and date
+  const filterStatus = ({ status, date }) => {
+    const dateNow = new Date().getTime();
     if (status) {
-      const dataFilterStatus = dataFilter.filter(item => item.description === status)
-      return dataFilterStatus;
+      const dataFilterStatus = dataSort.filter(item => item.description === status);
+      if (date) {
+        const dataFilterDate = dataFilterStatus.filter(item => {
+          return dateNow - (86400000 * date) < new Date(item.created).getTime() && new Date(item.created).getTime() < dateNow;
+        });
+        return dataFilterDate;
+      } else {
+        return dataFilterStatus;
+      }
+    } else if (date) {
+      const dataFilterDate = dataSort.filter(item => {
+        return dateNow - (86400000 * date) < new Date(item.created).getTime() && new Date(item.created).getTime() < dateNow;
+      });
+      return dataFilterDate;
     } else {
-      return dataFilter;
+      return dataSort;
     }
   }
 
@@ -67,7 +98,6 @@ function App() {
   const showConfirm = (id, type) => {
     setShowPopConfirm(true);
     setTypeRemove(type);
-    console.log(id)
     type === 'single' ? setId(id) : setIds(id);
   }
 
@@ -116,6 +146,11 @@ function App() {
 
   // show info form update
   const showForm = id => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: "smooth"
+    })
     const newItem = dataTables.filter(item => {
       return item.id === id
     })
@@ -152,12 +187,13 @@ function App() {
     return (
       <div className='header'>
         <Filter onFilter={(e) => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
-        <FilterOption onFilterOption={(e) => setStatus(e.target.value)} />
+        <FilterOption onFilterOption={(e) => setStatus({ date: status.date, status: e.target.value })} />
+        <FilterDate onFilterDate={(e) => setStatus({ date: e.target.value, status: status.status })} />
         {ids.length !== 0 && <DeleteMultiple showConfirm={showConfirm} id={ids} />}
         <Export onExport={() => downloadCSV(dataTables)} />
       </div>
     );
-  }, [filterText, resetPaginationToggle, dataTables, ids]);
+  }, [filterText, resetPaginationToggle, dataTables, ids, status]);
 
   const columns = [
     {
@@ -198,6 +234,16 @@ function App() {
     },
   ];
 
+  const conditionalRowStyles = [
+    {
+      when: row => row.description === 'Chưa phỏng vấn',
+      style: {
+        color: '#721c24',
+        backgroundColor: '#f8d7da',
+      },
+    },
+  ];
+
   const customStyles = {
     subHeader: {
       style: {
@@ -234,7 +280,7 @@ function App() {
   }
 
   return (
-    <div className='container-full'>
+    <div>
       <Update data={dataUpdate} show={showFormUpdate} handleSubmit={handleSubmitUpdate} />
       <Confirm show={showPopConfirm} hidden={hiddenConfirm} id={id} ids={ids} type={typeRemove} remove={removeItem} removeMulti={removeMultiple} />
 
@@ -253,6 +299,7 @@ function App() {
           customStyles={customStyles}
           selectableRows
           onSelectedRowsChange={selectRow}
+          conditionalRowStyles={conditionalRowStyles}
         />
       </div>
     </div>

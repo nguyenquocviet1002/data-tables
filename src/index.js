@@ -3,11 +3,26 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import TabBar from './components/TabBar/Tabbar';
+import View from './components/View/View';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route element={
+          <div className='container-full'>
+            <TabBar />
+            <Outlet />
+          </div>
+        }>
+          <Route path='/' element={<App />} />
+          <Route path='/view' element={<View />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
