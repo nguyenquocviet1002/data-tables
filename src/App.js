@@ -146,11 +146,18 @@ function App() {
 
   // show info form update
   const showForm = id => {
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "smooth"
-    })
+    const mediaQuery = window.matchMedia('(max-width: 1500px)');
+    if (mediaQuery.matches) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+      })
+    }
+
+    let rows = document.getElementsByClassName('sc-jsMahE');
+    [...rows].forEach(elm => elm.classList.remove('active'));
+    document.getElementById(`row-${id}`).classList.add('active');
     const newItem = dataTables.filter(item => {
       return item.id === id
     })
@@ -159,7 +166,7 @@ function App() {
   }
 
   const handleSubmitUpdate = async dataNew => {
-    setPending(true);
+    // setPending(true);
     await updateData(dataNew)
       .then(res => res.json())
       .then(
@@ -168,7 +175,11 @@ function App() {
             item.id === dataNew.id ? { ...item, ...dataNew } : item
           );
           setDataTables(newDataTables);
-          setPending(false);
+          // setPending(false);
+          document.getElementById(`row-${dataNew.id}`).classList.add('success');
+          setTimeout(() => {
+            document.getElementById(`row-${dataNew.id}`).classList.remove('success');
+          }, 3000);
         },
         err => console.log(err)
       )
@@ -200,29 +211,46 @@ function App() {
       name: 'Họ và tên',
       selector: row => row.name,
       sortable: true,
+      allowOverflow: true,
+      wrap: true,
     },
     {
-      name: 'Điện thoại',
+      name: 'Phone',
       selector: row => row.phone,
       sortable: true,
+      grow: 0.5,
+      allowOverflow: true,
+      wrap: false,
     },
     {
       name: 'Email',
       selector: row => row.email,
       sortable: true,
+      grow: 1.5,
+      allowOverflow: true,
+      wrap: true,
     },
     {
       name: 'Vị trí ứng tuyển',
       selector: row => row.position,
       sortable: true,
+      grow: 2,
+      allowOverflow: true,
+      wrap: true,
     },
     {
       name: 'File CV',
       cell: row => <Download linkDownload={row.cv} />,
+      grow: 0.5,
+      allowOverflow: true,
+      wrap: true,
     },
     {
       name: 'Trạng thái',
       selector: row => row.description,
+      grow: 0.8,
+      allowOverflow: true,
+      wrap: true,
     },
     {
       name: 'Ngày',
@@ -230,7 +258,10 @@ function App() {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
-      })
+      }),
+      grow: 0.5,
+      allowOverflow: true,
+      wrap: false,
     },
     {
       name: 'Hành động',
@@ -280,35 +311,34 @@ function App() {
       style: {
         paddingLeft: '8px',
         paddingRight: '8px',
-        div: {
-          whiteSpace: "break-spaces !important"
-        }
       },
     },
   }
 
   return (
     <div>
-      <Update data={dataUpdate} show={showFormUpdate} handleSubmit={handleSubmitUpdate} />
       <Confirm show={showPopConfirm} hidden={hiddenConfirm} id={id} ids={ids} type={typeRemove} remove={removeItem} removeMulti={removeMultiple} />
 
-      <div className='table__box'>
-        <DataTable
-          columns={columns}
-          data={filterStatus(status)}
-          pagination
-          paginationResetDefaultPage={resetPaginationToggle}
-          subHeader
-          subHeaderComponent={subHeaderComponentMemo}
-          persistTableHead
-          progressPending={pending}
-          striped
-          highlightOnHover
-          customStyles={customStyles}
-          selectableRows
-          onSelectedRowsChange={selectRow}
-        // conditionalRowStyles={conditionalRowStyles}
-        />
+      <div className='main__box'>
+        <Update data={dataUpdate} show={showFormUpdate} handleSubmit={handleSubmitUpdate} />
+        <div className='table__box'>
+          <DataTable
+            columns={columns}
+            data={filterStatus(status)}
+            pagination
+            paginationResetDefaultPage={resetPaginationToggle}
+            subHeader
+            subHeaderComponent={subHeaderComponentMemo}
+            persistTableHead
+            progressPending={pending}
+            striped
+            highlightOnHover
+            customStyles={customStyles}
+            selectableRows
+            onSelectedRowsChange={selectRow}
+          // conditionalRowStyles={conditionalRowStyles}
+          />
+        </div>
       </div>
     </div>
   );

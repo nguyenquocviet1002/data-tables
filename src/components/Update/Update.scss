@@ -1,11 +1,14 @@
 .update {
-    width: 100%;
-    max-width: 50%;
-    margin: 10px auto;
+    width: 25%;
+    height: fit-content;
     padding: 20px;
+    margin-left: 15px;
     border-radius: 10px;
     box-shadow: 0 0 5px 0px #ddd;
     background-color: #fff;
+    order: 2;
+    position: sticky;
+    top: 15px;
 
     &__title {
         text-align: center;
@@ -19,10 +22,10 @@
         flex-wrap: wrap;
     }
 
-    .update__group {
+    &__group {
         width: 100%;
         display: block;
-        margin: 10px 0;
+        margin: 8px 0;
     }
 
     &__label {
@@ -37,10 +40,9 @@
         border-width: 1px;
         border-style: solid;
         border-color: #d1d5db;
-        border-radius: 0.5rem;
         width: 100%;
         display: block;
-        padding: 10px;
+        padding: 8px 10px;
 
         &:focus,
         &:focus-within {
@@ -52,16 +54,68 @@
     &__cta {
         display: flex;
         justify-content: center;
+        margin: 0 -5px;
     }
 
 
-    .update__submit {
+    &__submit {
         display: block;
         min-width: 80px;
-        margin: 0 10px;
+        margin: 0 5px;
     }
 
-    @media (max-width: 767px) {
-        max-width: 100%;
+
+    @media (max-width: 1500px) {
+        position: unset;
+        margin-left: 0;
+        margin-bottom: 15px;
+        width: 100%;
+
+        &__cta {
+            justify-content: flex-end;
+        }
+
+        &__group {
+            display: flex;
+            align-items: center;
+        }
+
+        &__label {
+            width: 10%;
+        }
+
+        &__input {
+            flex: 1;
+        }
+
+        &__submit {
+            min-width: 90px;
+        }
+    }
+
+    @media (max-width: 1160px) {
+        &__label {
+            width: 15%;
+        }
+    }
+
+    @media (max-width: 790px) {
+        &__label {
+            width: 20%;
+        }
+    }
+
+    @media (max-width: 600px) {
+        &__group {
+            display: block;
+        }
+
+        &__label {
+            width: 100%;
+        }
+
+        &__cta {
+            justify-content: center;
+        }
     }
 }

@@ -17,7 +17,9 @@ const Update = ({ data, show, handleSubmit }) => {
     }, [show, data])
 
     const hidden = () => {
-        setShowP(false)
+        setShowP(false);
+        let rows = document.getElementsByClassName('sc-jsMahE');
+        [...rows].forEach(elm => elm.classList.remove('active'));
     }
     return (
         <div className="update" style={!showP ? { display: "none" } : { display: 'block' }}>
