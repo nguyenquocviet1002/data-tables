@@ -256,7 +256,7 @@ function App() {
     subHeader: {
       style: {
         display: 'block',
-        padding: '0 0 10px 0'
+        padding: '20px 20px 10px'
       }
     },
     head: {
@@ -273,7 +273,7 @@ function App() {
     rows: {
       style: {
         minHeight: '60px',
-        fontSize: '15px'
+        fontSize: '15px',
       },
     },
     cells: {

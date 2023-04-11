@@ -34,9 +34,13 @@
 
 .table__box {
     box-shadow: 0 0 5px 0px #ddd;
-    padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
+    overflow: hidden;
+
+    .sc-dnwKUv {
+        border-radius: unset !important;
+    }
 }
 
 .button {
