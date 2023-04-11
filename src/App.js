@@ -2,19 +2,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './App.scss';
 import DataTable from 'react-data-table-component';
 import { getData, removeData, updateData } from './apis/tablesAPI';
-import { downloadCSV } from './utils/convertToCSV';
-import Export from './components/Export/Export';
 import Filter from './components/Search/Search';
 import Confirm from './components/Confirm/Confirm';
 import Update from './components/Update/Update';
-import FilterOption from './components/FilterOption/FilterOption';
 import DeleteMultiple from './components/DeleteMultiple/DeleteMultiple';
-import FilterDate from './components/FilterDate/FilterDate';
 
 function App() {
 
   const [dataTables, setDataTables] = useState([]);
-  const [dataTablesAgo, setDataTablesAgo] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [pending, setPending] = useState(true);
@@ -24,7 +19,6 @@ function App() {
   const [id, setId] = useState('');
   const [ids, setIds] = useState([]);
   const [typeRemove, setTypeRemove] = useState('');
-  const [status, setStatus] = useState({ status: '', date: '' });
 
   // get data
   useEffect(() => {
@@ -34,36 +28,24 @@ function App() {
         data => {
           setDataTables(data);
           setPending(false);
-          const dateNow = new Date().getTime();
-          const dataAgo = data.filter(item => {
-            return dateNow - (86400000 * 7) < new Date(item.created).getTime() && item.name;
-          })
-          setDataTablesAgo(dataAgo);
         },
         error => console.log(error),
       );
   }, []);
 
-  console.log(dataTablesAgo);
 
   // filter search
   const filteredName = dataTables.filter(
     item => item.phone && item.phone.toLowerCase().includes(filterText.toLowerCase()),
   );
   const filteredPhoneNumber = dataTables.filter(
-    item => item.id && item.id.includes(filterText),
+    item => item.userid && item.userid.includes(filterText),
   );
-  const filteredEmail = dataTables.filter(
+  const filteredIP = dataTables.filter(
     item => item.ip && item.ip.includes(filterText),
   );
-  // const filteredEmail = dataTables.filter(
-  //   item => item.email && item.email.toLowerCase().includes(filterText.toLowerCase()),
-  // );
-  const filteredPositionApply = dataTables.filter(
-    item => item.position && item.position.toLowerCase().includes(filterText.toLowerCase()),
-  );
 
-  const dataFilterAll = [...filteredName, ...filteredPhoneNumber, ...filteredEmail, ...filteredPositionApply];
+  const dataFilterAll = [...filteredName, ...filteredPhoneNumber, ...filteredIP];
 
   const dataFilter = dataFilterAll.filter((item, index) => dataFilterAll.indexOf(item) === index);
 
@@ -73,28 +55,6 @@ function App() {
       new Date(b.created).getTime()
   }).reverse();
 
-  // data after change status and date
-  const filterStatus = ({ status, date }) => {
-    const dateNow = new Date().getTime();
-    if (status) {
-      const dataFilterStatus = dataSort.filter(item => item.description === status);
-      if (date) {
-        const dataFilterDate = dataFilterStatus.filter(item => {
-          return dateNow - (86400000 * date) < new Date(item.created).getTime() && new Date(item.created).getTime() < dateNow;
-        });
-        return dataFilterDate;
-      } else {
-        return dataFilterStatus;
-      }
-    } else if (date) {
-      const dataFilterDate = dataSort.filter(item => {
-        return dateNow - (86400000 * date) < new Date(item.created).getTime() && new Date(item.created).getTime() < dateNow;
-      });
-      return dataFilterDate;
-    } else {
-      return dataSort;
-    }
-  }
 
   // popup confirm remove
   const showConfirm = (id, type) => {
@@ -175,13 +135,10 @@ function App() {
     return (
       <div className='header'>
         <Filter onFilter={(e) => setFilterText(e.target.value)} onClear={handleClear} filterText={filterText} />
-        <FilterOption onFilterOption={(e) => setStatus({ date: status.date, status: e.target.value })} />
-        <FilterDate onFilterDate={(e) => setStatus({ date: e.target.value, status: status.status })} />
         {ids.length !== 0 && <DeleteMultiple showConfirm={showConfirm} id={ids} />}
-        <Export onExport={() => downloadCSV(dataTables)} />
       </div>
     );
-  }, [filterText, resetPaginationToggle, dataTables, ids, status]);
+  }, [filterText, resetPaginationToggle, ids]);
 
   const columns = [
     {
@@ -202,6 +159,11 @@ function App() {
     {
       name: 'IP',
       selector: row => row.ip,
+      sortable: true,
+    },
+    {
+      name: 'Ngày',
+      selector: row => new Date(row.created_at).toLocaleString('en-US'),
       sortable: true,
     },
     {
@@ -266,7 +228,7 @@ function App() {
       <div className='table__box'>
         <DataTable
           columns={columns}
-          data={filterStatus(status)}
+          data={dataSort}
           pagination
           paginationResetDefaultPage={resetPaginationToggle}
           subHeader
@@ -279,6 +241,7 @@ function App() {
           selectableRows
           onSelectedRowsChange={selectRow}
           conditionalRowStyles={conditionalRowStyles}
+          paginationRowsPerPageOptions={[10, 50, 100]}
         />
       </div>
     </div>

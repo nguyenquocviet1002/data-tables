@@ -9,7 +9,9 @@ const updateData = (data) => {
 }
 
 const removeData = (id) => {
-    return fetch(`${baseURL}/delete?id=${id}`)
+    return fetch(`${baseURL}/delete-uservotes/${id}`, {
+        method: 'DELETE'
+    })
 }
 
 export { getData, updateData, removeData };
