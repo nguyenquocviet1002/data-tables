@@ -10,7 +10,7 @@ import View from './components/View/View';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename='data-tables'>
       <Routes>
         <Route element={
           <div className='container-full'>
