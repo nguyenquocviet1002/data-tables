@@ -86,6 +86,7 @@ function App() {
 
   // remove multiple item
   const removeMultiple = ids => {
+    setPending(true);
     ids.map(async id => {
       await removeData(id)
         .then(res => res.json())
