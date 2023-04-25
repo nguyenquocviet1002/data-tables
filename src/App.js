@@ -15,7 +15,6 @@ import FilterDate from './components/FilterDate/FilterDate';
 function App() {
 
   const [dataTables, setDataTables] = useState([]);
-  const [dataTablesAgo, setDataTablesAgo] = useState([]);
   const [dataUpdate, setDataUpdate] = useState({});
   const [resetPaginationToggle, setResetPaginationToggle] = useState(false);
   const [pending, setPending] = useState(true);
@@ -35,17 +34,10 @@ function App() {
         data => {
           setDataTables(data.body);
           setPending(false);
-          const dateNow = new Date().getTime();
-          const dataAgo = data.body.filter(item => {
-            return dateNow - (86400000 * 7) < new Date(item.created).getTime() && item.name;
-          })
-          setDataTablesAgo(dataAgo);
         },
         error => console.log(error),
       );
   }, []);
-
-  console.log(dataTablesAgo);
 
   // filter search
   const filteredName = dataTables.filter(
@@ -273,15 +265,22 @@ function App() {
     },
   ];
 
-  // const conditionalRowStyles = [
-  //   {
-  //     when: row => row.description === 'Chưa phỏng vấn',
-  //     style: {
-  //       color: '#721c24',
-  //       backgroundColor: '#f8d7da',
-  //     },
-  //   },
-  // ];
+  const conditionalRowStyles = [
+    {
+      when: row => row.description === 'Chưa phỏng vấn',
+      style: {
+        color: '#8a6d3b',
+        backgroundColor: '#fcf8e3',
+      },
+    },
+    {
+      when: row => row.description === 'Đã hủy',
+      style: {
+        color: '#a94442',
+        backgroundColor: '#f2dede',
+      },
+    },
+  ];
 
   const customStyles = {
     subHeader: {
@@ -336,7 +335,7 @@ function App() {
             customStyles={customStyles}
             selectableRows
             onSelectedRowsChange={selectRow}
-          // conditionalRowStyles={conditionalRowStyles}
+            conditionalRowStyles={conditionalRowStyles}
           />
         </div>
       </div>

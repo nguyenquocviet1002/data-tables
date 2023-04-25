@@ -7,21 +7,23 @@
     }
 }
 
-.active {
-    color: #31708f !important;
-    background-color: #d9edf7 !important;
-
-    &:hover {
+.table__box {
+    .active {
+        color: #31708f !important;
         background-color: #d9edf7 !important;
+
+        &:hover {
+            background-color: #d9edf7 !important;
+        }
     }
-}
 
-.success {
-    color: #3c763d !important;
-    background-color: #dff0d8 !important;
-
-    &:hover {
+    .success {
+        color: #3c763d !important;
         background-color: #dff0d8 !important;
+
+        &:hover {
+            background-color: #dff0d8 !important;
+        }
     }
 }
 
