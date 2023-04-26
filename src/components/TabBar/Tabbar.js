@@ -7,6 +7,7 @@ import Notification from "../Notification/Notification";
 const TabBar = () => {
     const [dataTablesAgo, setDataTablesAgo] = useState([]);
 
+
     // get data
     useEffect(() => {
         getData()
