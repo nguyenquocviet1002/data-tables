@@ -243,6 +243,20 @@ function App() {
       grow: 0.8,
       allowOverflow: true,
       wrap: true,
+      conditionalCellStyles: [
+        {
+          when: row => row.description === 'Chưa phỏng vấn',
+          style: {
+            color: 'rgb(227 160 8/1)',
+          }
+        },
+        {
+          when: row => row.description === 'Đã hủy',
+          style: {
+            color: 'rgb(200 30 30/1)',
+          }
+        },
+      ]
     },
     {
       name: 'Ngày',
@@ -262,23 +276,6 @@ function App() {
           <button className='button button--outline' onClick={() => showForm(row.id)}>Chỉnh sửa</button>
           <button className='button button--outline red' onClick={() => showConfirm(row.id, 'single')}>Xóa</button>
         </div>
-    },
-  ];
-
-  const conditionalRowStyles = [
-    {
-      when: row => row.description === 'Chưa phỏng vấn',
-      style: {
-        color: '#8a6d3b',
-        backgroundColor: '#fcf8e3',
-      },
-    },
-    {
-      when: row => row.description === 'Đã hủy',
-      style: {
-        color: '#a94442',
-        backgroundColor: '#f2dede',
-      },
     },
   ];
 
@@ -335,7 +332,6 @@ function App() {
             customStyles={customStyles}
             selectableRows
             onSelectedRowsChange={selectRow}
-            conditionalRowStyles={conditionalRowStyles}
           />
         </div>
       </div>

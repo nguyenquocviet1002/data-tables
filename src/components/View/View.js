@@ -237,11 +237,11 @@ const View = () => {
 
     const TableComponent = () => {
         return (
-            <>
-                {dataSort.map((item, index) => (
+            <div className="box__inner">
+                {dataSort.slice(0, 10).map((item, index) => (
                     <div key={index} className={index % 2 !== 0 ? "box__itemName bg_gray" : "box__itemName"}>{item.name} - {item.position}</div>
                 ))}
-            </>
+            </div>
         )
     }
 
