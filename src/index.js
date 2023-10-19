@@ -9,21 +9,23 @@ import View from './components/View/View';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-    <BrowserRouter basename='cp/tuyen-dung'>
-      <Routes>
-        <Route element={
-          <div className='container-full'>
+  // <React.StrictMode>
+  <BrowserRouter basename="cp/tuyen-dung">
+    <Routes>
+      <Route
+        element={
+          <div className="container-full">
             <TabBar />
             <Outlet />
           </div>
-        }>
-          <Route path='/' element={<App />} />
-          <Route path='/view' element={<View />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </React.StrictMode>
+        }
+      >
+        <Route path="/" element={<App />} />
+        <Route path="/view" element={<View />} />
+      </Route>
+    </Routes>
+  </BrowserRouter>,
+  // </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
