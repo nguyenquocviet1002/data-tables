@@ -97,7 +97,6 @@ const Update = ({ data, show, handleSubmit }) => {
             <option value="Đã hủy">Đã hủy</option>
             <option value="Đã duyệt hồ sơ">Đã duyệt hồ sơ</option>
             <option value="Đã phỏng vấn">Đã phỏng vấn</option>
-            <option value="Đang xét duyệt">Đang xét duyệt</option>
             <option value="Đã được nhận">Đã được nhận</option>
             <option value="Đã nhận việc">Đã nhận việc</option>
           </select>

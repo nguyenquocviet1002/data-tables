@@ -9,6 +9,18 @@
   flex-wrap: wrap;
 }
 
+.box__name {
+  margin: 15px;
+}
+
+.box__table {
+  border-radius: 4px;
+  box-shadow: 0 0 5px 0 #ddd;
+  overflow: hidden;
+  margin-top: 15px;
+  width: 100%;
+}
+
 .report__item {
   width: calc(50% - 30px);
   margin: 15px;
@@ -78,6 +90,71 @@
   font-weight: 600;
   font-size: 19px;
   color: #7b7a7a;
+}
+
+.box__widget {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.widget {
+  width: calc(50% - 5px);
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  padding: 1.25rem;
+  &__title {
+    color: rgb(107 114 128 / 1);
+    font-weight: 600;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    margin: 0;
+  }
+  &__number {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+  }
+  .bold {
+    font-weight: 600;
+  }
+}
+
+.select__month {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 15px;
+  label {
+    font-weight: 600;
+  }
+  select {
+    color: #111827;
+    background-color: #f9fafb;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #d1d5db;
+    border-radius: 0.5rem;
+    display: block;
+    padding: 5px 30px 5px 10px;
+
+    &:focus {
+      outline: auto;
+      outline-color: #3f83f8;
+    }
+  }
+}
+
+.select__month select:not([size]) {
+  background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.1rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
 @media (max-width: 1024px) {

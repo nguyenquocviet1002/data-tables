@@ -1,30 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
-import TabBar from './components/TabBar/TabBar';
-import View from './components/View/View';
+import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
-  <BrowserRouter basename="cp/tuyen-dung">
-    <Routes>
-      <Route
-        element={
-          <div className="container-full">
-            <TabBar />
-            <Outlet />
-          </div>
-        }
-      >
-        <Route path="/" element={<App />} />
-        <Route path="/view" element={<View />} />
-      </Route>
-    </Routes>
-  </BrowserRouter>,
+  <App />,
   // </React.StrictMode>
 );
 
